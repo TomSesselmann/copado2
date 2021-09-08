@@ -22,7 +22,7 @@ jobs:
         with:
           type: 'zip'
           filename: 'release.zip'
-          path: env.GIT_DIFF
+          path: ${{ env.GIT_DIFF }}
       - name: Salesforce SFDX CLI Action
         uses: sfdx-actions/setup-sfdx@v1
         with:
