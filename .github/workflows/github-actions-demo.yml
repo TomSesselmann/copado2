@@ -11,17 +11,21 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.pull_request.draft == false
     steps:
-      - name: Setup Node Environment
-        uses: actions/setup-node@v2-beta
-        with:
-          node-version: '12'
       - name: Checkout Local Repo
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+      - name: Get Diff Action
+        uses: technote-space/get-diff-action@v4.0.1
+      - name: ZIP Release
+        uses: thedoctor0/zip-release@master
+        with:
+          type: 'zip'
+          filename: 'release.zip'
+          path: env.GIT_DIFF
       - name: Salesforce SFDX CLI Action
         uses: sfdx-actions/setup-sfdx@v1
         with:
           sfdx-auth-url: ${{ secrets.AUTH_SECRET }}
-      - name: sfdx-test-run
-        run: sfdx force:mdapi:deploy --deploydir . --checkonly
+      - name: SFDX Run Validation
+        run: sfdx force:mdapi:deploy --zipfile 'release.zip' --checkonly #--wait -1 --json
