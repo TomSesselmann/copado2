@@ -19,6 +19,7 @@ jobs:
         uses: technote-space/get-diff-action@v4.0.1
         with:
           PATTERNS: |
+            **
             !.*
           SEPARATOR: ','
       # - run: zip -r 'release.zip' ${{ env.GIT_DIFF }}
