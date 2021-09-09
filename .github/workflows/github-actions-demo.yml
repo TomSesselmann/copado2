@@ -1,40 +1,40 @@
-name: Example CI/CD Github Action
-on:
-  pull_request:
-    branches: [ uat ]
-    types: [opened, synchronize, reopened, ready_for_review]
-    paths:
-      - 'applications/**'
-jobs:
-  validate:
-    name: Validate
-    runs-on: ubuntu-latest
-    if: github.event.pull_request.draft == false
-    steps:
-      - name: Checkout Local Repo
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: Get Diff Action
-        uses: technote-space/get-diff-action@v4.0.1
-        with:
-          PATTERNS: |
-            **
-            !.*
-          SEPARATOR: ','
-      # - run: zip -r 'release.zip' ${{ env.GIT_DIFF }}
-      # - name: ZIP Release
-      #   uses: thedoctor0/zip-release@master
-      #   with:
-      #     type: 'zip'
-      #     filename: 'release.zip'
-      #     path: '${{ env.GIT_DIFF }}'
-      - name: Salesforce SFDX CLI Action
-        uses: sfdx-actions/setup-sfdx@v1
-        with:
-          sfdx-auth-url: ${{ secrets.AUTH_SECRET }}
-      - name: SFDX Convert to Source
-        run: sfdx force:mdapi:convert -r ${{ env.GIT_DIFF }} -d output
-      - name: SFDX Run Validation
-        run: sfdx force:source:deploy -p output
-      #   run: sfdx force:mdapi:deploy --zipfile 'release.zip' --checkonly --wait -1 #--json
+# name: Example CI/CD Github Action
+# on:
+#   pull_request:
+#     branches: [ uat ]
+#     types: [opened, synchronize, reopened, ready_for_review]
+#     paths:
+#       - 'applications/**'
+# jobs:
+#   validate:
+#     name: Validate
+#     runs-on: ubuntu-latest
+#     if: github.event.pull_request.draft == false
+#     steps:
+#       - name: Checkout Local Repo
+#         uses: actions/checkout@v2
+#         with:
+#           fetch-depth: 0
+#       - name: Get Diff Action
+#         uses: technote-space/get-diff-action@v4.0.1
+#         with:
+#           PATTERNS: |
+#             **
+#             !.*
+#           SEPARATOR: ','
+#       # - run: zip -r 'release.zip' ${{ env.GIT_DIFF }}
+#       # - name: ZIP Release
+#       #   uses: thedoctor0/zip-release@master
+#       #   with:
+#       #     type: 'zip'
+#       #     filename: 'release.zip'
+#       #     path: '${{ env.GIT_DIFF }}'
+#       - name: Salesforce SFDX CLI Action
+#         uses: sfdx-actions/setup-sfdx@v1
+#         with:
+#           sfdx-auth-url: ${{ secrets.AUTH_SECRET }}
+#       - name: SFDX Convert to Source
+#         run: sfdx force:mdapi:convert -r ${{ env.GIT_DIFF }} -d output
+#       - name: SFDX Run Validation
+#         run: sfdx force:source:deploy -p output
+#       #   run: sfdx force:mdapi:deploy --zipfile 'release.zip' --checkonly --wait -1 #--json
