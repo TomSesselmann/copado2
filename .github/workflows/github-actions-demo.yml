@@ -17,6 +17,9 @@ jobs:
           fetch-depth: 0
       - name: Get Diff Action
         uses: technote-space/get-diff-action@v4.0.1
+        with:
+          PATTERNS: !.*
+          SEPARATOR: ','
       # - run: zip -r 'release.zip' ${{ env.GIT_DIFF }}
       # - name: ZIP Release
       #   uses: thedoctor0/zip-release@master
