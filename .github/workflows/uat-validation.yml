@@ -1,4 +1,4 @@
-name: Example CI/CD Github Action
+name: UAT Validation
 on:
   pull_request:
     branches: [ uat ]
@@ -20,17 +20,9 @@ jobs:
         with:
           PATTERNS: 'force-app/main/default/**'
           SEPARATOR: ','
-      # - run: zip -r 'release.zip' ${{ env.GIT_DIFF }}
-      # - name: ZIP Release
-      #   uses: thedoctor0/zip-release@master
-      #   with:
-      #     type: 'zip'
-      #     filename: 'release.zip'
-      #     path: '${{ env.GIT_DIFF }}'
       - name: Install SFDX CLI
         uses: sfdx-actions/setup-sfdx@v1
         with:
           sfdx-auth-url: ${{ secrets.AUTH_SECRET }}
       - name: SFDX Run Validation
         run: sfdx force:source:deploy -p ${{ env.GIT_DIFF }} --checkonly
-      #   run: sfdx force:mdapi:deploy --zipfile 'release.zip' --checkonly --wait -1 #--json

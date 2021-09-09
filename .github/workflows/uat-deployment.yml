@@ -1,0 +1,26 @@
+name: UAT Deployment
+on:
+  push:
+    branches: [ uat ]
+    paths:
+      - 'force-app/main/default/**'
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Local Repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Get Diff Action
+        uses: technote-space/get-diff-action@v4.0.1
+        with:
+          PATTERNS: 'force-app/main/default/**'
+          SEPARATOR: ','
+      - name: Install SFDX CLI
+        uses: sfdx-actions/setup-sfdx@v1
+        with:
+          sfdx-auth-url: ${{ secrets.AUTH_SECRET }}
+      - name: SFDX Run Deployment
+        run: sfdx force:source:deploy -p ${{ env.GIT_DIFF }}
