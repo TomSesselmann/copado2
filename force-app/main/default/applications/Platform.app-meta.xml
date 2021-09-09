@@ -8,7 +8,7 @@
     <formFactors>Large</formFactors>
     <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
     <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
-    <label>Platform</label>
+    <label>Platform2</label>
     <navType>Standard</navType>
     <tabs>standard-Account</tabs>
     <tabs>standard-Contact</tabs>

@@ -1,0 +1,28 @@
+name: UAT Validation
+on:
+  pull_request:
+    branches: [ uat ]
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - 'force-app/main/default/**'
+jobs:
+  validate:
+    name: Validate
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false
+    steps:
+      - name: Checkout Local Repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Get Diff Action
+        uses: technote-space/get-diff-action@v4.0.1
+        with:
+          PATTERNS: 'force-app/main/default/**'
+          SEPARATOR: ','
+      - name: Install SFDX CLI
+        uses: sfdx-actions/setup-sfdx@v1
+        with:
+          sfdx-auth-url: ${{ secrets.AUTH_SECRET }}
+      - name: SFDX Run Validation
+        run: sfdx force:source:deploy -p ${{ env.GIT_DIFF }} --checkonly
