@@ -17,7 +17,7 @@ jobs:
           fetch-depth: 0
       - name: Get Diff Action
         uses: technote-space/get-diff-action@v4.0.1
-      - run: ls
+      - run: ls applications
       - name: ZIP Release
         uses: thedoctor0/zip-release@master
         with:
